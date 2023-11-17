@@ -1,0 +1,61 @@
+body {
+    background-color: black;
+}
+
+.userDetectionField {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: radial-gradient(circle, #fff 10%, transparent 10%);
+    background-size: 100px 100px;
+    filter: brightness(0);
+}
+
+.brighten {
+    animation: brightenAnimation 1s ease forwards;
+  }
+  
+  .dim {
+    animation: dimAnimation 1s ease forwards;
+  }
+  
+  @keyframes brightenAnimation {
+    to {
+      filter: brightness(0.2);
+    }
+  }
+  
+  @keyframes dimAnimation {
+    to {
+      filter: brightness(0);
+    }
+  }
+  
+
+.dateTimeModule {
+    position: fixed;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    
+   h1 {
+    font-size: 5vh;
+    margin: 0;
+   }
+
+   h2 {
+    font-size: 3vh;
+    margin: 0;
+   }
+}
