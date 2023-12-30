@@ -5,6 +5,9 @@ import { faPersonWalking, faCircleExclamation, faFaceSmileBeam } from '@fortawes
 import 'animate.css';
 import axios from 'axios';
 import QRCode from 'qrcode.react'; 
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
 
 function App() {
 
@@ -83,7 +86,7 @@ function App() {
           const opacity = distance / maxRadius;
   
           // Set the fill style for the dot with the calculated opacity
-          ctx.fillStyle = `rgba(50, 50, 50, ${opacity})`;
+          ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
   
           // Draw the dot
           ctx.beginPath();
@@ -122,8 +125,8 @@ function App() {
       </section>
 
       <div className="dateTimeModule"> 
-
-        <div className="qrCodeContainer">
+        
+        <div className="qrCodeContainer hidden">
           <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100}  />
         </div>
 
@@ -132,11 +135,15 @@ function App() {
           <h2>{currentDateTime.toLocaleDateString([], dateFormatOptions)}</h2>
         </div>
 
-    </div>
+      </div>
+
+      <section className='contentSection'>
+       <Calendar />
+      </section>
 
     </div>
 
-     <section className={`userDetectionField ${isBright ? 'brighten' : ''}`}>
+      <section className={`userDetectionField ${isBright ? 'brighten' : ''}`}>
         <canvas ref={canvasRef}></canvas>
       </section>
 
