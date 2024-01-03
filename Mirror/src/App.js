@@ -75,7 +75,7 @@ function App() {
         
       </section>
 
-      <div className={`dateTimeModule ${isBright ? 'whiteBackground' : ''}`}> 
+      <div className={`dateTimeModule ${isBright ? 'whiteBackground brighten' : ''}`}> 
           <div className="qrCodeContainer hidden">
             <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100}  />
           </div>
