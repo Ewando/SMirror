@@ -75,18 +75,16 @@ function App() {
         
       </section>
 
-      <div className="dateTimeModule"> 
-        
-        <div className="qrCodeContainer hidden">
-          <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100}  />
-        </div>
-
-        <div className="timeContainer">
-          <h1>{currentDateTime.toLocaleTimeString([], timeFormatOptions)}</h1>
-          <h2>{currentDateTime.toLocaleDateString([], dateFormatOptions)}</h2>
-        </div>
-
+      <div className={`dateTimeModule ${isBright ? 'whiteBackground' : ''}`}> 
+          <div className="qrCodeContainer hidden">
+            <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100}  />
+          </div>
+          <div className="timeContainer">
+            <h1>{currentDateTime.toLocaleTimeString([], timeFormatOptions)}</h1>
+            <h2>{currentDateTime.toLocaleDateString([], dateFormatOptions)}</h2>
+          </div>
       </div>
+
 
       <section className='contentSection'>
        <Calendar />
