@@ -14,7 +14,6 @@ function App() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [isBright, setIsBright] = useState(false);
   const [ip, setIp] = useState('');
-  const canvasRef = useRef(null);
 
   useEffect(() => {
 
@@ -47,55 +46,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      const width = canvas.offsetWidth;
-      const height = canvas.offsetHeight;
-      canvas.width = width;
-      canvas.height = height;
-  
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
-  
-      // Define the maximum dot size and the number of dots
-      const dotCount = 50; // Adjust the dot count as needed
-      const maxDotSize = 5; // Maximum size of a dot at the edges
-  
-      // Fill the background with black color
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, width, height);
-  
-      // Draw the white dots
-      for (let i = 0; i < dotCount; i++) {
-        for (let j = 0; j < dotCount; j++) {
-          const x = (width / dotCount) * i;
-          const y = (height / dotCount) * j;
-  
-          // Calculate the distance from the center of the canvas
-          const dx = centerX - x;
-          const dy = centerY - y;
-          const distance = Math.sqrt(dx * dx + dy * dy) + 250;
-  
-          // Determine the size of the dot based on its distance from the center
-          const size = maxDotSize * (distance / maxRadius);
-  
-          // Set the opacity of the dot based on its distance from the center
-          // Closer to the center, the dot is more transparent
-          const opacity = distance / maxRadius;
-  
-          // Set the fill style for the dot with the calculated opacity
-          ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-  
-          // Draw the dot
-          ctx.beginPath();
-          ctx.arc(x, y, size, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.fill();
-        }
-      }
-    }
+    
   }, []);
   
   
@@ -144,7 +95,7 @@ function App() {
     </div>
 
       <section className={`userDetectionField ${isBright ? 'brighten' : ''}`}>
-        <canvas ref={canvasRef}></canvas>
+       
       </section>
 
     </>

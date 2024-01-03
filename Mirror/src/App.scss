@@ -15,6 +15,8 @@ body {
 }
 
 .systemPrompts {
+
+  display: none;
   
   position: absolute;
   top: 10%;
@@ -49,19 +51,22 @@ body {
 }
 
 .userDetectionField {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    filter: brightness(0);
-    z-index: -1;
-
-    canvas {
-      
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: 
+    radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%),
+    radial-gradient(rgb(255, 255, 255) 14%, transparent 14%),
+    radial-gradient(rgb(255, 255, 255) 14%, transparent 14%);
+  background-position: center, 0px 0px, 50px 50px;
+  background-size: cover, 50px 50px, 50px 50px;
+  background-color: rgb(0, 0, 0);
+  filter: brightness(0);
 }
 
 .brighten {
@@ -93,12 +98,10 @@ body {
   width: 100%;
   height: 7.5%;
   top: 0;
-  color: black;
-  background-color: white;
+  color: white;
   display: flex;
   align-items: center; 
   justify-content: center;
-  border-radius: 25px;
 
 
 .qrCodeContainer {
@@ -111,7 +114,7 @@ body {
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
 }
 
