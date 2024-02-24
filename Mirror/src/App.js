@@ -49,7 +49,6 @@ function App() {
 
     return () => {
       clearInterval(timer);
-      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
