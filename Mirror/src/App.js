@@ -38,8 +38,9 @@ function App() {
     };
 
     ws.onmessage = (event) => {
-      if (event.data === "Motion detected") {
-        setIsBright(prev => !prev); // Toggle brightness based on motion detection
+      console.log('Message received: ', event.data);
+      if (event.data === "Motion detected") { // Ensure this matches exactly
+        setIsBright(prev => !prev); // Toggle or set state based on the message
       }
     };
 
