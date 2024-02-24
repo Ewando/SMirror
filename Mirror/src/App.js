@@ -31,13 +31,21 @@ function App() {
       setCurrentDateTime(new Date());
     }, 60000);
 
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowDown') {
-        setIsBright(prev => !prev);
+    const ws = new WebSocket('ws://192.168.1.82:5678');
+
+    ws.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    ws.onmessage = (event) => {
+      if (event.data === "Motion detected") {
+        setIsBright(prev => !prev); // Toggle brightness based on motion detection
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
 
     return () => {
       clearInterval(timer);
