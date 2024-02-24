@@ -40,7 +40,7 @@ function App() {
     ws.onmessage = (event) => {
       console.log('Message received: ', event.data);
       if (event.data === "Motion detected") { // Ensure this matches exactly
-        setIsBright(prev => !prev); // Toggle or set state based on the message
+        setIsBright(true); // Toggle or set state based on the message
       }
     };
 
@@ -74,7 +74,7 @@ function App() {
 
     <>
 
-    <div className="App">
+    <div className={`App ${isBright ? 'brighten' : ''}`}>
 
       <section className={`systemPrompts ${isBright ? 'brighten' : ''}`}>
 
