@@ -13,44 +13,11 @@ body {
   width: 100%;
   height: 100%;
   filter: brightness(0);
-}
-
-.systemPrompts {
-
-  display: none;
-  position: absolute;
-  top: 10%;
-  width: 50%;
-  height: 10%;
-  text-align: center;
-  filter: brightness(0);
-  z-index: 2;
-
-  p {
-    font-size: 2vh;
-    color: black;
-    font-weight: bold;
-    margin-left: 2.5%;
-    animation-iteration-count: infinite;
-    animation-duration: 3s;
-    animation-delay: 1s;
-    background-color: white;
-    padding: 20px;
-    border-radius: 25px;
-
-    svg {
-      font-size: 3vh;
-      margin-right: 5px;
-    }
-
-    .green {color: green;}
-    .orange {color: orange;}
-    .red {color: red;}
-
-  }
+  overflow: hidden;
 }
 
 .userDetectionField {
+  display: none;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -96,30 +63,16 @@ body {
 }
   
 
-.dateTimeModule {
+.headerBar {
+
   position: absolute;
   width: 100%;
-  height: 7.5%;
-  top: 5%;
+  height: 20%;
   color: white;
   display: flex;
-  align-items: center; 
-
-  .qrCodeContainer {
-    margin-right: 5%;
-    border: 20px solid white;
-    border-radius: 25px;
-  }
-
-  .timeContainer {
-    padding: 2.5%;
-    width: 30%;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    justify-content: space-between;
-
-  }
+  align-items: flex-start; 
+  flex-direction: column;
+  justify-content: center;
 
   h1, h2 {
     width: max-content; 
@@ -128,6 +81,39 @@ body {
   
   h1 {
     font-size: 5vh;
+    margin: 0;
+  }
+
+  .qrCodeContainer {
+    margin-right: 5%;
+    border: 20px solid white;
+    border-radius: 25px;
+  }
+
+  .timeContainer {
+
+    margin-left: 2.5%;
+    width: 30%;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    justify-content: space-between;
+
+  }
+
+  .userContainer {
+
+    margin-left: 2.5%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    i {
+      color: white;
+      margin-right: 2.5%;
+    }
+
   }
 
 }
@@ -136,24 +122,28 @@ body {
 
   position: absolute;
   width: 100%;
-  height: 40%;
+  height: 80%;
   bottom: 0;
+
+  .contentCard {
+    position: absolute;
+    height: 90%;
+    width: 95%;
+    margin: 2.5%;
+    background-color: red;
+  }
 
   .react-calendar {
 
     display: none;
-
     position: absolute;
     width: 100%;
     font-size: 2vh;
     border: none;
     background-color: transparent;
 
-    .react-calendar__navigation { display: none;}
-
-    .react-calendar__month-view__days {
-      background-color: white;
-    }
+    .react-calendar__navigation { display: none; }
+    .react-calendar__month-view__days { background-color: white; }
 
   }
 
