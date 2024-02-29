@@ -8,12 +8,23 @@ body {
     padding: 0;
 }
 
+@font-face {
+  font-family: 'Geist';
+  src: url('Geist-Regular.woff2');
+}
+
+@font-face {
+  font-family: 'GeistBold';
+  src: url('Geist-UltraBlack.woff2');
+}
+
 .App {
   position: absolute;
   width: 100%;
   height: 100%;
   filter: brightness(0);
   overflow: hidden;
+  font-family: 'Geist';
 }
 
 .userDetectionField {
@@ -82,6 +93,7 @@ body {
   h1 {
     font-size: 5vh;
     margin: 0;
+    font-family: 'GeistBold';
   }
 
   .qrCodeContainer {
@@ -118,19 +130,20 @@ body {
 
 }
 
-.contentSection {
+.content {
 
   position: absolute;
   width: 100%;
-  height: 80%;
-  bottom: 0;
+  height: 70%;
+  bottom: 10%;
 
   .contentCard {
     position: absolute;
     height: 90%;
     width: 95%;
     margin: 2.5%;
-    background-color: red;
+    color: white;
+    text-align: center;
   }
 
   .react-calendar {
@@ -147,6 +160,30 @@ body {
 
   }
 
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+
+  p {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2.5%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+
+   i {
+    margin-right: 5px;
+   }
+  }
 }
 
 // Global Classes

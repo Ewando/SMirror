@@ -11,11 +11,12 @@ function App() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [isBright, setIsBright] = useState(true);
   const [ip, setIp] = useState('');
-  const [activeCardIndex, setActiveCardIndex] = useState(0); // State for active card index
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [recognizedUser, setRecognizedUser] = useState('');
 
   useEffect(() => {
 
-    axios.get('http://localhost:3001/getIP') // Adjust the URL as needed
+    axios.get('http://localhost:3001/getIP')
     .then(response => {
       setIp(response.data.ip);
       console.log(response.data.ip);
@@ -40,13 +41,18 @@ function App() {
 
     const motionSocket = new WebSocket('ws://192.168.1.82:5678');
     const gestureSocket = new WebSocket('ws://192.168.1.82:5679');
+    const facialSocket = new WebSocket('ws://192.168.1.82:5670');
 
     motionSocket.onopen = () => {
-      console.log('WebSocket connection established');
+      console.log('Motion WebSocket connection established');
     };
 
     gestureSocket.onopen = () => {
-      console.log('WebSocket connection established');
+      console.log('Gesture WebSocket connection established');
+    };
+
+    facialSocket.onopen = () => {
+      console.log('Facial WebSocket connection established');
     };
 
     motionSocket.onmessage = (event) => {
@@ -88,12 +94,22 @@ function App() {
       }
     };
 
+    facialSocket.onmessage = (event) => {
+      console.log('Message received: ', event.data);
+      const data = JSON.parse(event.data);
+      setRecognizedUser(data.name);
+    };
+
     motionSocket.onclose = () => {
-      console.log('WebSocket connection closed');
+      console.log('Motion WebSocket connection closed');
     };
 
     gestureSocket.onclose = () => {
-      console.log('WebSocket connection closed');
+      console.log('Gesture WebSocket connection closed');
+    };
+
+    facialSocket.onclose = () => {
+      console.log('Facial WebSocket connection closed');
     };
 
     return () => {
@@ -103,6 +119,8 @@ function App() {
       gestureSocket.close();
     };
   }, []);
+
+  const contentTitles = ["Weather", "Anecdotes", "Ask Myra", "Calendar"];
 
   const renderActiveCard = () => {
     switch (activeCardIndex) {
@@ -119,24 +137,41 @@ function App() {
     }
   };
 
+  const getNextPageTitle = () => {
+    // Calculate the index of the next page
+    const nextIndex = (activeCardIndex + 1) % contentTitles.length;
+    // Return the title of the next page
+    return contentTitles[nextIndex];
+  };
+
   return (
     <div className={`App ${isBright ? 'brighten' : ''}`}>
+
       <div className='headerBar'>
         <div className="qrCodeContainer hidden">
           <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100} />
         </div>
+
         <div className={`timeContainer ${isBright ? 'whiteBackground brighten' : ''}`}>
+
           <h2>{currentDateTime.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'long' })}</h2>
           <h1>{currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h1>
+
         </div>
+
         <div className='userContainer'>
-          <i className="fa-solid fa-user-slash"></i>
-          <p>No user detected</p>
+          <i className={`fa-solid ${recognizedUser === "Unknown" ? 'fa-user-slash' : 'fa-user'}`}></i>
+          <p>{recognizedUser === "Unknown" ? 'Unknown user' : recognizedUser || 'No user detected'}</p>
         </div>
+
       </div>
 
-      <section className='contentSection'>
+      <section className='content'>
         {renderActiveCard()}
+      </section>
+
+      <section className='footer'>
+        <p><i className="fa-solid fa-thumbs-up"></i>{getNextPageTitle()}</p>
       </section>
 
       <section className={`userDetectionField ${isBright ? 'brighten' : ''}`}>
