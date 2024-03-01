@@ -31,9 +31,9 @@ function App() {
 
     const handleKeyPress = (event) => {
       if (event.key === 'ArrowUp') {
-        setActiveCardIndex(prevIndex => (prevIndex - 1 + 4) % 4); // Cycle up through 4 cards
+        setActiveCardIndex(prevIndex => (prevIndex - 1 + 4) % 4);
       } else if (event.key === 'ArrowDown') {
-        setActiveCardIndex(prevIndex => (prevIndex + 1) % 4); // Cycle down through 4 cards
+        setActiveCardIndex(prevIndex => (prevIndex + 1) % 4); 
       }
     };
 
@@ -61,7 +61,7 @@ function App() {
       switch (event.data) {
         case "Motion detected":
           console.log("Motion Detected");
-          setIsBright(true); // Example of setting state based on motion detection
+          setIsBright(true); 
           break;
         default:
           console.log("Unrecognized message or gesture");
@@ -74,20 +74,16 @@ function App() {
       switch (event.data) {
         case "Open Palm":
           console.log("Open Palm gesture detected");
-          // Perform an action or update the state based on the Open Palm gesture
           break;
         case "Thumbs Up":
           console.log("Thumbs Up gesture detected");
           setActiveCardIndex(prevIndex => (prevIndex - 1 + 4) % 4); 
-          // Perform an action or update the state based on the Thumbs Up gesture
           break;
         case "Pointing Up":
           console.log("Pointing Up gesture detected");
-          // Perform an action or update the state based on the Pointing Up gesture
           break;
         case "Thumbs Down":
           console.log("Thumbs Down gesture detected");
-          // Perform an action or update the state based on the Thumbs Down gesture
           break;
         default:
           console.log("Unrecognized message or gesture");
@@ -122,25 +118,22 @@ function App() {
 
   const contentTitles = ["Weather", "Anecdotes", "Ask Myra", "Calendar"];
 
+  const showContentAndFooter = recognizedUser && isBright;
+
   const renderActiveCard = () => {
+    if (!showContentAndFooter) return null; 
+
     switch (activeCardIndex) {
-      case 0:
-        return <div className='contentCard'><p>Weather</p></div>;
-      case 1:
-        return <div className='contentCard'><p>Anecdotes</p></div>;
-      case 2:
-        return <div className='contentCard'><p>Ask Myra</p></div>;
-      case 3:
-        return <div className='contentCard'><p>Calendar</p><Calendar /></div>;
-      default:
-        return <div className='contentCard'><p>Unknown Card</p></div>;
+      case 0: return <div className='contentCard'><p>Weather</p></div>;
+      case 1: return <div className='contentCard'><p>Anecdotes</p></div>;
+      case 2: return <div className='contentCard'><p>Ask Myra</p></div>;
+      case 3: return <div className='contentCard'><p>Calendar</p><Calendar /></div>;
+      default: return <div className='contentCard'><p>Unknown Card</p></div>;
     }
   };
 
   const getNextPageTitle = () => {
-    // Calculate the index of the next page
     const nextIndex = (activeCardIndex + 1) % contentTitles.length;
-    // Return the title of the next page
     return contentTitles[nextIndex];
   };
 
@@ -166,13 +159,17 @@ function App() {
 
       </div>
 
-      <section className='content'>
-        {renderActiveCard()}
-      </section>
+      {showContentAndFooter && (
+        <>
+          <section className='content'>
+            {renderActiveCard()}
+          </section>
 
-      <section className='footer'>
-        <p><i className="fa-solid fa-thumbs-up"></i>{getNextPageTitle()}</p>
-      </section>
+          <section className='footer'>
+            <p><i className="fa-solid fa-thumbs-up"></i> {getNextPageTitle()}</p>
+          </section>
+        </>
+      )}
 
       <section className={`userDetectionField ${isBright ? 'brighten' : ''}`}>
       </section>
