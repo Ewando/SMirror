@@ -9,10 +9,11 @@ import 'react-calendar/dist/Calendar.css';
 function App() {
 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const [isBright, setIsBright] = useState(true);
+  const [isBright, setIsBright] = useState(false);
   const [ip, setIp] = useState('');
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [recognizedUser, setRecognizedUser] = useState('');
+  const [lastDetectionTime, setLastDetectionTime] = useState(Date.now());
 
   useEffect(() => {
 
@@ -29,30 +30,15 @@ function App() {
       setCurrentDateTime(new Date());
     }, 60000);
 
-    const handleKeyPress = (event) => {
-      if (event.key === 'ArrowUp') {
-        setActiveCardIndex(prevIndex => (prevIndex - 1 + 4) % 4);
-      } else if (event.key === 'ArrowDown') {
-        setActiveCardIndex(prevIndex => (prevIndex + 1) % 4); 
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-
     const motionSocket = new WebSocket('ws://192.168.1.82:5678');
-    const gestureSocket = new WebSocket('ws://192.168.1.82:5679');
-    const facialSocket = new WebSocket('ws://192.168.1.82:5670');
+    const recognitionSocket = new WebSocket('ws://192.168.1.82:5670');
 
     motionSocket.onopen = () => {
       console.log('Motion WebSocket connection established');
     };
 
-    gestureSocket.onopen = () => {
-      console.log('Gesture WebSocket connection established');
-    };
-
-    facialSocket.onopen = () => {
-      console.log('Facial WebSocket connection established');
+    recognitionSocket.onopen = () => {
+      console.log('Recognition WebSocket connection established');
     };
 
     motionSocket.onmessage = (event) => {
@@ -60,7 +46,7 @@ function App() {
     
       switch (event.data) {
         case "Motion detected":
-          console.log("Motion Detected");
+          setLastDetectionTime(Date.now());
           setIsBright(true); 
           break;
         default:
@@ -68,10 +54,18 @@ function App() {
       }
     };
     
-    gestureSocket.onmessage = (event) => {
+    recognitionSocket.onmessage = (event) => {
+
       console.log('Message received: ', event.data);
-    
-      switch (event.data) {
+      const data = JSON.parse(event.data);
+
+      if (data.faces.length > 0 && data.faces[0] !== "Unknown") {
+        setRecognizedUser(data.faces[0]);
+      } else {
+        setRecognizedUser('');
+      }
+
+      switch (data.gesture) {
         case "Open Palm":
           console.log("Open Palm gesture detected");
           break;
@@ -86,39 +80,38 @@ function App() {
           console.log("Thumbs Down gesture detected");
           break;
         default:
-          console.log("Unrecognized message or gesture");
+          
       }
     };
 
-    facialSocket.onmessage = (event) => {
-      console.log('Message received: ', event.data);
-      const data = JSON.parse(event.data);
-      setRecognizedUser(data.name);
+    recognitionSocket.onclose = () => {
+      console.log('Recognition WebSocket connection closed');
     };
 
     motionSocket.onclose = () => {
       console.log('Motion WebSocket connection closed');
     };
 
-    gestureSocket.onclose = () => {
-      console.log('Gesture WebSocket connection closed');
-    };
-
-    facialSocket.onclose = () => {
-      console.log('Facial WebSocket connection closed');
-    };
-
     return () => {
       clearInterval(timer);
-      window.removeEventListener('keydown', handleKeyPress);
       motionSocket.close();
-      gestureSocket.close();
+      recognitionSocket.close();
     };
   }, []);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (Date.now() - lastDetectionTime > 5000) {
+        setIsBright(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [lastDetectionTime]);
+
   const contentTitles = ["Weather", "Anecdotes", "Ask Myra", "Calendar"];
 
-  const showContentAndFooter = recognizedUser && isBright;
+  const showContentAndFooter = recognizedUser && recognizedUser !== "No user detected";
 
   const renderActiveCard = () => {
     if (!showContentAndFooter) return null; 
@@ -138,7 +131,7 @@ function App() {
   };
 
   return (
-    <div className={`App ${isBright ? 'brighten' : ''}`}>
+    <div className={`App ${isBright ? 'brighten' : 'dim'}`}>
 
       <div className='headerBar'>
         <div className="qrCodeContainer hidden">
