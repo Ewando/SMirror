@@ -101,13 +101,17 @@ function App() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (Date.now() - lastDetectionTime > 5000) {
+
+      const timeSinceLastDetection = Date.now() - lastDetectionTime;
+
+      if (timeSinceLastDetection > 3000 && recognizedUser === '') {
         setIsBright(false);
       }
     }, 1000);
-
+  
+    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
-  }, [lastDetectionTime]);
+  }, [lastDetectionTime, recognizedUser]);
 
   const contentTitles = ["Weather", "Anecdotes", "Ask Myra", "Calendar"];
 
