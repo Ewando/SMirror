@@ -113,7 +113,7 @@ function App() {
     return () => clearInterval(intervalId);
   }, [lastDetectionTime, recognizedUser]);
 
-  const contentTitles = ["Weather", "Anecdotes", "Ask Myra", "Calendar"];
+  const contentTitles = ["Mirror", "Anecdotes", "Ask Myra", "Calendar", "News", "Weather", "Mobile"];
 
   const showContentAndFooter = recognizedUser && recognizedUser !== "No user detected";
 
@@ -121,10 +121,13 @@ function App() {
     if (!showContentAndFooter) return null; 
 
     switch (activeCardIndex) {
-      case 0: return <div className='contentCard'><p>Weather</p></div>;
+      case 0: return <div className='contentCard'><p>Mirror</p></div>;
       case 1: return <div className='contentCard'><p>Anecdotes</p></div>;
       case 2: return <div className='contentCard'><p>Ask Myra</p></div>;
       case 3: return <div className='contentCard'><p>Calendar</p><Calendar /></div>;
+      case 4: return <div className='contentCard'><p>News</p></div>;
+      case 5: return <div className='contentCard'><p>Weather</p></div>;
+      case 6: return <div className='contentCard'><p>Mobile</p></div>;
       default: return <div className='contentCard'><p>Unknown Card</p></div>;
     }
   };
