@@ -4,6 +4,8 @@ import 'animate.css';
 import axios from 'axios';
 import QRCode from 'qrcode.react'; 
 import Calendar from 'react-calendar';
+import Weaher from './components/Weather';
+import News from './components/News';
 import 'react-calendar/dist/Calendar.css';
 
 function App() {
@@ -100,6 +102,16 @@ function App() {
   }, []);
 
   useEffect(() => {
+
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowDown") {
+        setActiveCardIndex((prevIndex) => (prevIndex + 1) % contentTitles.length);
+      }
+    };
+  
+    // Add the keydown event listener
+    window.addEventListener('keydown', handleKeyDown);
+
     const intervalId = setInterval(() => {
 
       const timeSinceLastDetection = Date.now() - lastDetectionTime;
@@ -108,7 +120,7 @@ function App() {
         setIsBright(false);
       }
     }, 1000);
-  
+      
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, [lastDetectionTime, recognizedUser]);
@@ -118,6 +130,7 @@ function App() {
   const showContentAndFooter = recognizedUser && recognizedUser !== "No user detected";
 
   const renderActiveCard = () => {
+
     if (!showContentAndFooter) return null; 
 
     switch (activeCardIndex) {
@@ -125,8 +138,8 @@ function App() {
       case 1: return <div className='contentCard'><p>Anecdotes</p></div>;
       case 2: return <div className='contentCard'><p>Ask Myra</p></div>;
       case 3: return <div className='contentCard'><p>Calendar</p><Calendar /></div>;
-      case 4: return <div className='contentCard'><p>News</p></div>;
-      case 5: return <div className='contentCard'><p>Weather</p></div>;
+      case 4: return <div className='contentCard'><News/></div>;
+      case 5: return <div className='contentCard'><Weaher/></div>;
       case 6: return <div className='contentCard'><p>Mobile</p></div>;
       default: return <div className='contentCard'><p>Unknown Card</p></div>;
     }
@@ -136,6 +149,7 @@ function App() {
     const nextIndex = (activeCardIndex + 1) % contentTitles.length;
     return contentTitles[nextIndex];
   };
+  
 
   return (
     <div className={`App ${isBright ? 'brighten' : 'dim'}`}>

@@ -144,6 +144,9 @@ body {
     margin: 2.5%;
     color: white;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .react-calendar {
@@ -191,4 +194,25 @@ body {
 
 .hidden {
   display: none;
+}
+
+.newsArticle {
+  position: absolute;
+  left: 0;
+  width: 75%;
+  text-align: left;
+  font-family: 'Geist';
+
+  span, p {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 3em;
+  }
+
+  .newsQR {
+    margin-top: 5%;
+  }
+
 }
