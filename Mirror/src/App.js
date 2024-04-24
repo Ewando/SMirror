@@ -7,6 +7,7 @@ import Calendar from 'react-calendar';
 import Weaher from './components/Weather';
 import News from './components/News';
 import 'react-calendar/dist/Calendar.css';
+import Anecdotes from './components/Anecdotes';
 
 function App() {
 
@@ -94,18 +95,28 @@ function App() {
       console.log('Motion WebSocket connection closed');
     };
 
+    setRecognizedUser('ewan');
+    setIsBright('true');
+
     return () => {
       clearInterval(timer);
       motionSocket.close();
       recognitionSocket.close();
     };
+
+    
   }, []);
+
+  const getNextIndex = (currentIndex) => {
+    return (currentIndex + 1) % contentTitles.length;
+  };
 
   useEffect(() => {
 
     const handleKeyDown = (event) => {
       if (event.key === "ArrowDown") {
-        setActiveCardIndex((prevIndex) => (prevIndex + 1) % contentTitles.length);
+        setActiveCardIndex(prevIndex => (prevIndex + 1) % contentTitles.length);
+        console.log("Current Active Card Index:", activeCardIndex);
       }
     };
   
@@ -120,12 +131,15 @@ function App() {
         setIsBright(false);
       }
     }, 1000);
-      
+
     // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      clearInterval(intervalId);
+    };
   }, [lastDetectionTime, recognizedUser]);
 
-  const contentTitles = ["Mirror", "Anecdotes", "Ask Myra", "Calendar", "News", "Weather", "Mobile"];
+  const contentTitles = ["Mirror", "Anecdotes", "Ask Myra", "News", "Weather", "Mobile"];
 
   const showContentAndFooter = recognizedUser && recognizedUser !== "No user detected";
 
@@ -134,36 +148,30 @@ function App() {
     if (!showContentAndFooter) return null; 
 
     switch (activeCardIndex) {
-      case 0: return <div className='contentCard'><p>Mirror</p></div>;
-      case 1: return <div className='contentCard'><p>Anecdotes</p></div>;
+      case 0: return <div className='contentCard'><p></p></div>;
+      case 1: return <div className='contentCard'><Anecdotes /></div>;
       case 2: return <div className='contentCard'><p>Ask Myra</p></div>;
-      case 3: return <div className='contentCard'><p>Calendar</p><Calendar /></div>;
-      case 4: return <div className='contentCard'><News/></div>;
-      case 5: return <div className='contentCard'><Weaher/></div>;
-      case 6: return <div className='contentCard'><p>Mobile</p></div>;
+      case 3: return <div className='contentCard'><News/></div>;
+      case 4: return <div className='contentCard'><Weaher/></div>;
+      case 5: return <div className='contentCard'><p>Mobile</p></div>;
       default: return <div className='contentCard'><p>Unknown Card</p></div>;
     }
   };
 
   const getNextPageTitle = () => {
-    const nextIndex = (activeCardIndex + 1) % contentTitles.length;
+    const nextIndex = getNextIndex(activeCardIndex);
     return contentTitles[nextIndex];
   };
   
-
   return (
+    
     <div className={`App ${isBright ? 'brighten' : 'dim'}`}>
 
       <div className='headerBar'>
-        <div className="qrCodeContainer hidden">
-          <QRCode value='https://www.youtube.com/watch?v=dQw4w9WgXcQ' size={100} />
-        </div>
-
+       
         <div className={`timeContainer ${isBright ? 'whiteBackground brighten' : ''}`}>
-
           <h2>{currentDateTime.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'long' })}</h2>
           <h1>{currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h1>
-
         </div>
 
         <div className='userContainer'>

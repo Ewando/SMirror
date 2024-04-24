@@ -7,12 +7,13 @@ const News = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
+
         const fetchNews = async () => {
             try {
                 const response = await axios.get('https://newsapi.org/v2/everything', {
                     params: {
                         q: 'technology',
-                        apiKey: 'f5d5715050494b79a86cc042eaccee91', // Use your actual API key
+                        apiKey: 'f5d5715050494b79a86cc042eaccee91',
                     },
                 });
                 setArticles(response.data.articles);

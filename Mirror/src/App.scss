@@ -133,7 +133,8 @@ body {
 .content {
 
   position: absolute;
-  width: 100%;
+  width: 80%;
+  left: 10%;
   height: 70%;
   bottom: 10%;
 
@@ -163,6 +164,48 @@ body {
 
   }
 
+  .widget-left {
+    background-color: black;
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  .widget-left-menu--brown {
+    display: none;
+  }
+
+  .weather-left-card__number, .weather-left-card__degree, .weather-left-card__rising, .weather-left-card__means, .weather-left-card__wind, .calendar__item  {
+    color: white;
+  }
+
+  .widget-left__graphic  {
+
+    text {
+      fill: white !important;
+      stroke: white !important;
+    }
+
+    g path {
+      stroke: #f56e0f !important;
+      fill:  #f56e0f !important;
+    }
+    
+  }
+
+  .anecdotes {
+
+    h1 {
+      font-size: 2vh;
+      font-style: italic;
+      text-align: left;
+    }
+    
+    p {
+      font-size: 2vh;
+      text-align: left;
+    }
+  }
+
 }
 
 .footer {
@@ -186,6 +229,7 @@ body {
 
    i {
     margin-right: 5px;
+    color: #f56e0f;
    }
   }
 }
